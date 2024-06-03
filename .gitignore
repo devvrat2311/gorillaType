@@ -1,0 +1,6 @@
+#the final executable
+spacez
+
+#object files
+*.o
+
