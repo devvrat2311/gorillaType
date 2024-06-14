@@ -1,4 +1,4 @@
-#include "./include/gorilla.h"
+// #include "./include/gorilla.h"
 #include "./include/inputv2.h"
 #include <ctype.h>
 #include <stdio.h>
@@ -20,9 +20,7 @@
 
 // functions and variables
 void display();
-int handleTyping(
-    char,
-    char **); // returns the current length of the string that user is typing
+int handleTyping(char, char **); // returns the current length of the string that user is typing
 int characterControl(char);
 int matchStrings(char *s1, char *s2, int position);
 void resetString(char *string);
