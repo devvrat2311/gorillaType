@@ -1,4 +1,4 @@
-## **GorillaType** 
+## **GorillaType** 
 
 ### Description
 
@@ -17,9 +17,9 @@ I have taken huge inspiration from [Monkeytype](https://www.monkeytype.com) , an
 * [ ] Integrate a timer to score the user and analyse the results(wpm).
 * [ ] Make and use a corpus of english words which will be the building blocks of the test string, so that the test strings always have some new challenge to offer. The complexity of the words chosen will be dependent on the user's choice.
 
-## Build instructions 
+## Build instructions 
 
-### ***Linux*** 
+### ***Linux*** 
 
 1. Clone the repository
 
@@ -40,7 +40,7 @@ make
 ./gorillaType
 ```
 
-### ***Windows*** 
+### ***Windows*** 
 
 1. Clone the repository
 
@@ -48,5 +48,3 @@ make
 git clone https://github.com/devvrat2311/gorillaType.git
 cd gorillaType
 ```
-
-2.
