@@ -1,5 +1,5 @@
 // #include "./include/gorilla.h"
-#include "./include/inputv2.h"
+#include "./inputv2.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,9 +20,11 @@
 
 // functions and variables
 void display();
-int handleTyping(char, char **); // returns the current length of the string that user is typing
+int handleTyping(
+    char,
+    char **); // returns the current length of the string that user is typing
 int characterControl(char);
-int matchStrings(char *s1, char *s2, int position);
+int matchStrings(char *s1, char *s2);
 void resetString(char *string);
 void printFace();
 int state = 0;
@@ -47,8 +49,8 @@ int main() {
         state = 1;
       }
     } else if (state == 1) {
-      int position = handleTyping(ch, &p);
-      if (matchStrings(testString, displayString, position)) {
+      handleTyping(ch, &p);
+      if (matchStrings(testString, displayString)) {
         state = 2;
       }
     } else if (state == 2) {
@@ -101,7 +103,7 @@ int characterControl(char ch) {
 
 int handleTyping(
     char ch, char **p) { // in this function p is a pointer to the pointer which
-                         // points to the carets position in the string
+                         // points to the caret position in the displaystring
 
   startedTyping = true;
   if (characterControl(ch)) {
@@ -131,7 +133,7 @@ void resetString(char *string) {
   }
 }
 
-int matchStrings(char *s1, char *s2, int position) {
+int matchStrings(char *s1, char *s2) {
   // char s3[position];
   // strcpy(s3, s2);
   return (strcmp(s1, s2) == 0);

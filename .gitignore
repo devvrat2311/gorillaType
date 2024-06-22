@@ -1,6 +1,4 @@
-#the final executable
-gorillaType
 
-#object files
-*.o
+#object files and executables
+/bin/*
 
