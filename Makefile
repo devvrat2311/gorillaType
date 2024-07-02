@@ -21,7 +21,11 @@ EXEC = $(BIN_DIR)/run_gorillaType
 MAIN = $(SRC_DIR)/main.c
 
 # default target
-all: $(EXEC)
+all: $(BIN_DIR) $(EXEC)
+
+# create the bin directory if it doesn't exist
+$(BIN_DIR): 
+	mkdir -p $(BIN_DIR)
 
 # Link object files to create the executable
 $(EXEC): $(OBJS)
