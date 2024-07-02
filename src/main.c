@@ -44,21 +44,21 @@ int main() {
 
   // MAIN LOOP
   while ((ch = getch()) != ESCAPE_KEY) {
-    if (state == 0) {
+    if (state == MENU) {
       if (ch == '\n') {
-        state = 1;
+        state = TYPING;
       }
-    } else if (state == 1) {
+    } else if (state == TYPING) {
       handleTyping(ch, &p);
       if (matchStrings(testString, displayString)) {
-        state = 2;
+        state = RESULT;
       }
-    } else if (state == 2) {
+    } else if (state == RESULT) {
       startedTyping = false;
       resetString(displayString);
       p = &displayString[0];
       if (ch == '\n')
-        state = 0;
+        state = MENU;
     }
     display();
   }
@@ -70,11 +70,11 @@ void display() {
   system("clear");
   printf("press Escape to quit the program\n");
   int len = strlen(testString);
-  if (state == 0) {
+  if (state == MENU) {
     printFace();
     printf(ANSI_COLOR_YELLOW "\n\t\t\tWELCOME TO GORILLA TYPE\n\n\t\t\tPress "
                              "enter to start the test\n" ANSI_COLOR_RESET);
-  } else if (state == 1) {
+  } else if (state == TYPING) {
     printf(ANSI_COLOR_RED "\n\n \t\t\t%.*s\n" ANSI_COLOR_RESET, len - 1,
            testString);
     printf(ANSI_COLOR_CYAN "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, displayString);
@@ -83,7 +83,7 @@ void display() {
       printf(ANSI_COLOR_GREEN
              "\n\n\t\t\tPress any key(alphabet or spacebar) to start typing\n");
 
-  } else if (state == 2) {
+  } else if (state == RESULT) {
     printf(ANSI_COLOR_RED "\n\n \t\t\t%.*s\n" ANSI_COLOR_RESET, len - 1,
            testString);
     printf(ANSI_COLOR_CYAN "\n\n \t\t\t%.*s\n" ANSI_COLOR_RESET, len - 1,
