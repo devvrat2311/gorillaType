@@ -34,6 +34,8 @@ cd gorillaType
 make
 ```
 
+
+
 3. Run the executable just created to get into the program.
 
 ```bash
