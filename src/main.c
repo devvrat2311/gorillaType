@@ -1,9 +1,11 @@
 // #include "./include/gorilla.h"
-#include "./inputv2.h"
+//#include "./inputv2.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include<conio.h>
+#include<stdbool.h>
 
 #define ANSI_COLOR_CYAN "\x1b[36m"
 #define ANSI_COLOR_RESET "\x1b[0m"
@@ -33,7 +35,7 @@ char testString[MAXLINE] = "the quick brown fox jumps over the lazy dog|";
 char displayString[MAXLINE];
 
 int main() {
-  system("clear");
+  system("cls");
   display();
 
   char ch;
@@ -45,7 +47,7 @@ int main() {
   // MAIN LOOP
   while ((ch = getch()) != ESCAPE_KEY) {
     if (state == 0) {
-      if (ch == '\n') {
+      if (ch == '+') {
         state = 1;
       }
     } else if (state == 1) {
@@ -57,7 +59,7 @@ int main() {
       startedTyping = false;
       resetString(displayString);
       p = &displayString[0];
-      if (ch == '\n')
+      if (ch == '+')
         state = 0;
     }
     display();
@@ -67,7 +69,7 @@ int main() {
 }
 
 void display() {
-  system("clear");
+  system("cls");
   printf("press Escape to quit the program\n");
   int len = strlen(testString);
   if (state == 0) {
