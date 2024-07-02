@@ -34,7 +34,7 @@ cd gorillaType
 make
 ```
 
-3. Voila! Run the executable just created to get into the program.
+3. Run the executable just created to get into the program.
 
 ```bash
 ./gorillaType
@@ -73,4 +73,8 @@ cd gorillaType
 make
 ```
 
-
+3. Run the executable by typing 
+```
+  .\bin\run_gorillaType
+```
+  or you can ```cd \bin``` and then ```run_gorillaType```
