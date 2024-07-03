@@ -1,9 +1,11 @@
 // #include "./include/gorilla.h"
-#include "./inputv2.h"
+//#include "./inputv2.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include<conio.h>
+#include<stdbool.h>
 
 #define ANSI_COLOR_CYAN "\x1b[36m"
 #define ANSI_COLOR_RESET "\x1b[0m"
@@ -33,7 +35,7 @@ char testString[MAXLINE] = "the quick brown fox jumps over the lazy dog|";
 char displayString[MAXLINE];
 
 int main() {
-  system("clear");
+  system("cls");
   display();
 
   char ch;
@@ -44,9 +46,15 @@ int main() {
 
   // MAIN LOOP
   while ((ch = getch()) != ESCAPE_KEY) {
+<<<<<<< HEAD
     if (state == MENU) {
       if (ch == '\n') {
         state = TYPING;
+=======
+    if (state == 0) {
+      if (ch == '+') {
+        state = 1;
+>>>>>>> 5b3247c2ac81144960eab3341cb4527ebd4965cf
       }
     } else if (state == TYPING) {
       handleTyping(ch, &p);
@@ -57,8 +65,13 @@ int main() {
       startedTyping = false;
       resetString(displayString);
       p = &displayString[0];
+<<<<<<< HEAD
       if (ch == '\n')
         state = MENU;
+=======
+      if (ch == '+')
+        state = 0;
+>>>>>>> 5b3247c2ac81144960eab3341cb4527ebd4965cf
     }
     display();
   }
@@ -67,7 +80,7 @@ int main() {
 }
 
 void display() {
-  system("clear");
+  system("cls");
   printf("press Escape to quit the program\n");
   int len = strlen(testString);
   if (state == MENU) {
