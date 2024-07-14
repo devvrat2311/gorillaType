@@ -44,7 +44,7 @@ void reset(struct StopWatch *sw) {
   sw->leakedTimeTotal = 0;
 }
 
-double getElapsedTime(struct StopWatch *sw) {
+int getElapsedTime(struct StopWatch *sw) {
   struct timespec current_time;
   if (sw->running) {
     clock_gettime(CLOCK_MONOTONIC, &current_time);

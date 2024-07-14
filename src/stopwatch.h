@@ -25,7 +25,7 @@ struct StopWatch {
 void play(struct StopWatch *sw);
 void stop(struct StopWatch *sw);
 void reset(struct StopWatch *sw);
-double getElapsedTime(struct StopWatch *sw);
+int getElapsedTime(struct StopWatch *sw);
 void display(struct StopWatch *sw);
 
 #endif

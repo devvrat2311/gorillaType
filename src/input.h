@@ -8,5 +8,6 @@
 
 int getch(void);//emulates the getch() function from the conio.h library in windows
 int getche(void);//does the same, with echo
+int kbhit(void);
 void setNonCanonicalMode(bool);
 
