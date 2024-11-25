@@ -8,14 +8,16 @@ I have taken huge inspiration from [Monkeytype](https://www.monkeytype.com) , an
 
 ### Functionality (current)
 
-* [X] Typing mechanics
+* [X] Typing mechanics(Coloured)
 * [X] String matching
 * [X] Basic ui to navigate the program.
+* [x] Timer to score the user and analyse the results(wpm).
+* [x] Make and use a corpus of english words which will be the building blocks of the test string, so that the test strings always have some new challenge to offer. The complexity of the words chosen will be dependent on the user's choice. Will try to make use of NLP practices for this step.
 
 ### Functionality (to be added)
+* [ ] Larger Corpus and better word selection algorithm.
+* [ ] More details on the statistics page than just wpm.
 
-* [ ] Integrate a timer to score the user and analyse the results(wpm).
-* [ ] Make and use a corpus of english words which will be the building blocks of the test string, so that the test strings always have some new challenge to offer. The complexity of the words chosen will be dependent on the user's choice. Will try to make use of NLP practices for this step.
 
 ## Build instructions
 
@@ -48,7 +50,7 @@ make
 
 To use the "make" utility which is native to GNU, you can take one of the following steps,
 
-i. install [chocolaty](https://chocolatey.org/install) and run, 
+i. install [chocolaty](https://chocolatey.org/install) and run,
 ```bash
 choco install make
 ```
@@ -56,7 +58,7 @@ This method should work in most cases.
 
 ii. use the ```winget``` command (window 10 and 11),
 
-run the command 
+run the command
 ```bash
 winget install ezwinports.make
 ```
@@ -75,7 +77,7 @@ cd gorillaType
 make
 ```
 
-3. Run the executable by typing 
+3. Run the executable by typing
 ```
   .\bin\run_gorillaType
 ```
