@@ -2,6 +2,7 @@
 #include "./input.h"
 #include "./stopwatch.h"
 #include "./phrases.h"
+#include "./display.h"
 // #include <ctime>
 #include <bits/types/struct_timeval.h>
 #include <ctype.h>
@@ -30,7 +31,7 @@
 enum { MENU, TYPING, RESULT };
 
 // functions and variables
-void displayMain();
+void displayMain(char*);
 int handleTyping(char, char **);
 int matchStrings(char *s1, char *s2);
 void resetString(char *string);
@@ -43,13 +44,14 @@ char displayString[MAXLINE];
 int time_seconds = 0;
 
 int main() {
-  displayMain();
 
   struct StopWatch timer;
   reset(&timer);
 
-  char *p = &displayString[0];
+  char *p = &displayString[0];//this pointer handles the typing for the entire main routine of this program
   newPhrase(&testString);
+  testString = subString(testString, 0, strlen(testString) - 1);
+  displayMain(p);
   // char *newTestString = subString(testString, 0, strlen(testString) - 1);
   // printf("\n%s\n", newTestString);
   char ch;
@@ -73,20 +75,23 @@ int main() {
     } else if (state == RESULT) {
       startedTyping = false;
       resetString(displayString);
+      resetString(testString);
+      newPhrase(&testString);
+      testString = subString(testString, 0, strlen(testString) - 1);
       p = &displayString[0];
       if (ch == '\n')
         state = MENU;
     }
     if (ch == ESCAPE_KEY)
       break;
-    displayMain();
+    displayMain(p);
   }
   free(testString);
   // free(newTestString);
   return 0;
 }
 
-void displayMain() {
+void displayMain(char*cursor) {
 
   system("clear");
 
@@ -96,11 +101,17 @@ void displayMain() {
     printf(ANSI_COLOR_YELLOW "\n\t\t\tWELCOME TO GORILLA TYPE\n\n\t\t\tPress enter to start the test\n" ANSI_COLOR_RESET);
   } else if (state == TYPING) {
 
-    printf(ANSI_COLOR_RED "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, testString);
-    printf(ANSI_COLOR_CYAN "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, displayString);
+    // printf(ANSI_COLOR_RED "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, testString);
+    // printf(ANSI_COLOR_CYAN "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, displayString);
+    // printModded(testString, 40, 1);
+    // putchar('\n');
+    // printModded(displayString, 40, 2);
+    // putchar('\n');
+    printBoth(testString, displayString, cursor);
 
     if (!startedTyping)
-      printf(ANSI_COLOR_GREEN "\n\n\t\t\tPress any key(alphabet or spacebar) to start typing\n");
+        printModded("\n\n\t\t\tPress any key(alphabet or spacebar) to start typing\n", 40, 3);
+        // printf(ANSI_COLOR_GREEN "\n\n\t\t\tPress any key(alphabet or spacebar) to start typing\n");
 
   } else if (state == RESULT) {
     printf(ANSI_COLOR_RED "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, testString);
