@@ -30,7 +30,7 @@
 
 enum { MENU, TYPING, RESULT };
 
-// functions and variables
+// functions and global variables
 void displayMain(char*);
 int handleTyping(char, char **);
 int matchStrings(char *s1, char *s2);
@@ -49,8 +49,12 @@ int main() {
   reset(&timer);
 
   char *p = &displayString[0];//this pointer handles the typing for the entire main routine of this program
-  newPhrase(&testString);
-  testString = subString(testString, 0, strlen(testString) - 1);
+  // newPhrase(&testString);
+  // char *temp = subString(testString, 0, strlen(testString) - 1);
+  // free(testString);
+  // testString = temp;
+  // free(temp);
+
   displayMain(p);
   // char *newTestString = subString(testString, 0, strlen(testString) - 1);
   // printf("\n%s\n", newTestString);
@@ -61,6 +65,13 @@ int main() {
     ch = getch();
     time_seconds = getElapsedTime(&timer);
     if (state == MENU) {
+      // resetString(testString);
+      // free(testString);
+      newPhrase(&testString);
+      char *temp = subString(testString, 0, strlen(testString) - 1);
+      free(testString);
+      testString = temp;
+
       if (ch == '\n') {
         state = TYPING;
         play(&timer);
@@ -75,9 +86,11 @@ int main() {
     } else if (state == RESULT) {
       startedTyping = false;
       resetString(displayString);
-      resetString(testString);
-      newPhrase(&testString);
-      testString = subString(testString, 0, strlen(testString) - 1);
+      // free(testString);
+      // newPhrase(&testString);
+      // char* temp = subString(testString, 0, strlen(testString) - 1);
+      // free(testString);
+      // testString = temp;
       p = &displayString[0];
       if (ch == '\n')
         state = MENU;
@@ -154,6 +167,7 @@ char * subString(char *oldString, int pos, int len) {
   //NULL terminate the new String
   newString[len] = '\0';
 
+
   return newString;
 }
 
@@ -165,8 +179,10 @@ void resetString(char *string) {
 }
 
 int matchStrings(char *s1, char *s2) {
-
-  return (strcmp(s1, subString(s2,0,strlen(s2) - 1)) == 0);
+    char* temp = subString(s2,0,strlen(s2) - 1);
+    int result = (strcmp(s1, temp) == 0);
+    free(temp);
+    return result;
 }
 
 void printFace() {

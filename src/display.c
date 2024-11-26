@@ -42,12 +42,16 @@ void printBoth(char *testString, char *displayString, char *cursor) {
         // putchar(displayString[i]);
         if(&displayString[i] < cursor) {
             // printModded(testString, 40, 1);
-            printf(ANSI_COLOR_MAGENTA);
+            if(displayString[i] == testString[i]){
+              printf(ANSI_COLOR_GREEN);
+            } else {
+              printf(ANSI_COLOR_RED);
+            }
             putchar(displayString[i]);
             printf(ANSI_COLOR_RESET);
         } else {
             // printModded(displayString, 40, 2);
-            printf(ANSI_COLOR_RED);
+            printf(ANSI_COLOR_BLUE);
             putchar(testString[i]);
             printf(ANSI_COLOR_RESET);
         }
