@@ -12,12 +12,12 @@ I have taken huge inspiration from [Monkeytype](https://www.monkeytype.com) , an
 - [x] String matching
 - [x] Basic ui to navigate the program.
 - [x] Timer to score the user and analyse the results(wpm).
-- [x] Make and use a corpus of english words which will be the building blocks of the test string, so that the test strings always have some new challenge to offer. The complexity of the words chosen will be dependent on the user's choice. Will try to make use of NLP practices for this step.
+- [x] Make and use a corpus of english words which will be the building blocks of the test string.
+- [x] Larger Corpus (310 words)
 
 ### Functionality (to be added)
 
-- [ ] Larger Corpus and better word selection algorithm.
-- [ ] More details on the statistics page than just wpm.
+- [ ] Record a users statistics in some file and present last 5 scores along with average statistics and performance analysis for that round
 
 ## Build instructions
 
