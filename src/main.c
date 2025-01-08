@@ -1,9 +1,10 @@
 // #include "./include/gorilla.h"
-#include "./input.h"
-#include "./stopwatch.h"
-#include "./phrases.h"
 #include "./display.h"
+#include "./input.h"
+#include "./phrases.h"
+#include "./stopwatch.h"
 // #include <ctime>
+#include "./db_helper.h"
 #include <bits/types/struct_timeval.h>
 #include <ctype.h>
 #include <stdbool.h>
@@ -31,8 +32,8 @@
 enum { MENU, TYPING, RESULT };
 
 // functions and global variables
-void displayMain(char*);
-int handleTyping(char, char **);
+void displayMain(char *, struct StopWatch *);
+int handleTyping(char, char **, struct StopWatch *timer);
 int matchStrings(char *s1, char *s2);
 void resetString(char *string);
 char *subString(char *, int pos, int len);
@@ -45,28 +46,38 @@ int time_seconds = 0;
 
 int main() {
 
+  const char *dbFile = "my_database.dat";
+
+  createDB(dbFile);
+
+  Record r1 = {1, "Alice", 99.5};
+  Record r2 = {2, "Bob", 88.3};
+
+  addRecord(dbFile, r1);
+  addRecord(dbFile, r2);
+
   struct StopWatch timer;
   reset(&timer);
 
-  char *p = &displayString[0];//this pointer handles the typing for the entire main routine of this program
+  char *p = &displayString[0]; // this pointer handles the typing for the entire
+                               // main routine of this program
   // newPhrase(&testString);
   // char *temp = subString(testString, 0, strlen(testString) - 1);
   // free(testString);
   // testString = temp;
   // free(temp);
 
-  displayMain(p);
+  displayMain(p, &timer);
   // char *newTestString = subString(testString, 0, strlen(testString) - 1);
   // printf("\n%s\n", newTestString);
   char ch;
 
-  //MAIN LOOP
+  // MAIN LOOP
   while (1) {
     ch = getch();
     time_seconds = getElapsedTime(&timer);
     if (state == MENU) {
       // resetString(testString);
-      // free(testString);
       newPhrase(&testString);
       char *temp = subString(testString, 0, strlen(testString) - 1);
       free(testString);
@@ -74,16 +85,20 @@ int main() {
 
       if (ch == '\n') {
         state = TYPING;
-        play(&timer);
+        // play(&timer);
       }
     } else if (state == TYPING) {
-      handleTyping(ch, &p);
+      handleTyping(ch, &p, &timer);
       if (matchStrings(testString, displayString)) {
         state = RESULT;
         time_seconds = getElapsedTime(&timer);
         reset(&timer);
       }
     } else if (state == RESULT) {
+      if (ch == '\n' || ch == ESCAPE_KEY)
+        state = MENU;
+      else
+        continue;
       startedTyping = false;
       resetString(displayString);
       // free(testString);
@@ -92,81 +107,83 @@ int main() {
       // free(testString);
       // testString = temp;
       p = &displayString[0];
-      if (ch == '\n')
-        state = MENU;
     }
     if (ch == ESCAPE_KEY)
       break;
-    displayMain(p);
+    displayMain(p, &timer);
   }
   free(testString);
   // free(newTestString);
+  readDB(dbFile);
   return 0;
 }
 
-void displayMain(char*cursor) {
+void displayMain(char *cursor, struct StopWatch *timer) {
 
   system("clear");
 
-  printf("press Escape to quit the program\n");
+  printf("press Escape to quit the program\n\n\n");
   if (state == MENU) {
     printFace();
-    printf(ANSI_COLOR_YELLOW "\n\t\t\tWELCOME TO GORILLA TYPE\n\n\t\t\tPress enter to start the test\n" ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_YELLOW "\n\t\t\tWELCOME TO GORILLA TYPE\n\n\t\t\tPress "
+                             "enter to start the test\n" ANSI_COLOR_RESET);
   } else if (state == TYPING) {
 
     // printf(ANSI_COLOR_RED "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, testString);
-    // printf(ANSI_COLOR_CYAN "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, displayString);
-    // printModded(testString, 40, 1);
-    // putchar('\n');
+    // printf(ANSI_COLOR_CYAN "\n\n \t\t\t%s\n" ANSI_COLOR_RESET,
+    // displayString); printModded(testString, 40, 1); putchar('\n');
     // printModded(displayString, 40, 2);
-    // putchar('\n');
-    printBoth(testString, displayString, cursor);
+    display(timer);
+    printBoth(testString, displayString, cursor, 60);
+    putchar('\n');
 
     if (!startedTyping)
-        printModded("\n\n\t\t\tPress any key(alphabet or spacebar) to start typing\n", 40, 3);
-        // printf(ANSI_COLOR_GREEN "\n\n\t\t\tPress any key(alphabet or spacebar) to start typing\n");
+      printModded("\n\nPress any key(alphabet or spacebar) to start typing\n",
+                  60, 5);
 
   } else if (state == RESULT) {
-    printf(ANSI_COLOR_RED "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, testString);
-    printf(ANSI_COLOR_CYAN "\n\n \t\t\t%s\n" ANSI_COLOR_RESET, displayString);
-    printf(ANSI_COLOR_GREEN "\nSuccess!\nPress enter to go back to main screen\nAnalysis:\n" ANSI_COLOR_RESET);
-    printf(ANSI_COLOR_BLUE "\t\t\ttime taken: %d seconds\n" ANSI_COLOR_RESET, time_seconds);
+    printf(ANSI_COLOR_GREEN "Success!\nPress enter to go back to main "
+                            "screen\nAnalysis:\n" ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_BLUE "\t\t\ttime taken: %d seconds\n" ANSI_COLOR_RESET,
+           time_seconds);
+    printf(ANSI_COLOR_BLUE "\t\t\twords per minute: %d wpm\n" ANSI_COLOR_RESET,
+           (int)((float)(10.0 / time_seconds) * 60));
   }
-  printf("\n\n\n");
+  // printf("\n\n\n");
 }
 
-int handleTyping( char ch, char **p) {
+int handleTyping(char ch, char **p, struct StopWatch *timer) {
 
   startedTyping = true;
+  play(timer);
 
   if (isalpha(ch) || ch == ' ' || ch == '\b' || ch == 127) {
-    if (ch == '\b' || ch == 127) {      //handle backspace
+    if (ch == '\b' || ch == 127) { // handle backspace
       if (*p != &displayString[0]) {
         **p = '\0';
         --(*p);
-        **p = '|';
+        // **p = '|';
       }
     } else {
       **p = ch;
       (*p)++;
-      **p = '|';
+      // **p = '|';
     }
   }
 
   return (*p - &displayString[0]);
 }
 
-char * subString(char *oldString, int pos, int len) {
+char *subString(char *oldString, int pos, int len) {
   char *newString = (char *)malloc(len + 1);
-  if(newString == NULL) {
+  if (newString == NULL) {
     return NULL;
   }
-  for(int i = 0; i < len; ++i) {
+  for (int i = 0; i < len; ++i) {
     newString[i] = oldString[pos + i];
   }
-  //NULL terminate the new String
+  // NULL terminate the new String
   newString[len] = '\0';
-
 
   return newString;
 }
@@ -179,10 +196,10 @@ void resetString(char *string) {
 }
 
 int matchStrings(char *s1, char *s2) {
-    char* temp = subString(s2,0,strlen(s2) - 1);
-    int result = (strcmp(s1, temp) == 0);
-    free(temp);
-    return result;
+  // char *temp = subString(s2, 0, strlen(s2) - 1);
+  int result = (strcmp(s1, s2) == 0);
+  // free(temp);
+  return result;
 }
 
 void printFace() {

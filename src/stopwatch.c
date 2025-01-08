@@ -61,13 +61,14 @@ int getElapsedTime(struct StopWatch *sw) {
 }
 
 void display(struct StopWatch *sw) {
-  printf("\t\tStopwatch\n");
+  // system("clear");
+  // printf("\t\tStopwatch\n");
 
   // declaring variables
   int seconds = 0, minutes = 0, hours = 0;
-  struct timespec refresh_rate;
-  refresh_rate.tv_sec = 0;
-  refresh_rate.tv_nsec = 300000000L;
+  // struct timespec refresh_rate;
+  // refresh_rate.tv_sec = 0;
+  // refresh_rate.tv_nsec = 300000000L;
 
   int time = getElapsedTime(sw);
 
@@ -78,13 +79,12 @@ void display(struct StopWatch *sw) {
 
   // actual display code
   printf("\n\t\t%02d:%02d:%02d\n", hours, minutes, seconds);
-  printf("\n\t\t%lf\n", sw->leakedTimeTotal);
+  // printf("\n\t\t%lf\n", sw->leakedTimeTotal);
 
-  if (sw->running) {
-    printf("play mode >");
-  } else {
-    printf("pause mode ||");
-  }
-  nanosleep(&refresh_rate, NULL);
-  system("clear");
+  // if (sw->running) {
+  //   printf("play mode >");
+  // } else {
+  //   printf("pause mode ||");
+  // }
+  // nanosleep(&refresh_rate, NULL);
 }

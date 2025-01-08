@@ -6,7 +6,8 @@
 #define ANSI_COLOR_BLUE "\x1b[34m"
 #define ANSI_COLOR_MAGENTA "\x1b[35m"
 #define ANSI_COLOR_CYAN "\x1b[36m"
+#define ANSI_COLOR_INVERT "\033[7m"
 #define ANSI_COLOR_RESET "\x1b[0m"
 
 void printModded(char *string, int width, int color);
-void printBoth(char *testString, char *displayString, char *cursor);
+void printBoth(char *testString, char *displayString, char *cursor, int width);
