@@ -2,11 +2,11 @@
 
 typedef struct {
   int id;
-  char name[50];
-  float avg;
-} Record;
+  char username[50];
+  char password[50];
+} User;
 
 void createDB(const char *filename);
-void addRecord(const char *filename, Record record);
+void addUser(const char *filename, User user);
 void readDB(const char *filename);
-Record findRecordById(const char *filename, int id);
+User findUserById(const char *filename, int id);

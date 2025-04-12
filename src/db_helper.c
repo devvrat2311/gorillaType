@@ -13,13 +13,13 @@ void createDB(const char *filename) {
   fclose(file);
 }
 
-void addRecord(const char *filename, Record record) {
+void addUser(const char *filename, User record) {
   FILE *file = fopen(filename, "ab");
   if (!file) {
     perror("Failed to open database for writing");
     return;
   }
-  fwrite(&record, sizeof(Record), 1, file);
+  fwrite(&record, sizeof(User), 1, file);
   fclose(file);
 }
 
@@ -29,27 +29,26 @@ void readDB(const char *filename) {
     perror("Failed to open database for reading");
     return;
   }
-  Record record;
-  while (fread(&record, sizeof(Record), 1, file)) {
-    printf("ID: %d, Name: %s, Value: %.2f\n", record.id, record.name,
-           record.avg);
+  User user;
+  while (fread(&user, sizeof(User), 1, file)) {
+    printf("ID: %d, Name: %s\n", user.id, user.username);
   }
   fclose(file);
 }
 
-Record findRecordById(const char *filename, int id) {
+User findRecordById(const char *filename, int id) {
   FILE *file = fopen(filename, "rb");
   if (!file) {
-    perror("Failed to open a databasr for reading");
+    perror("Failed to open a database for reading");
     exit(EXIT_FAILURE);
   }
-  Record record;
-  while (fread(&record, sizeof(Record), 1, file)) {
-    if (record.id == id) {
+  User user;
+  while (fread(&user, sizeof(User), 1, file)) {
+    if (user.id == id) {
       fclose(file);
-      return record;
+      return user;
     }
   }
   fclose(file);
-  return (Record){0};
+  return (User){0};
 }

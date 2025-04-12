@@ -50,11 +50,11 @@ int main() {
 
   createDB(dbFile);
 
-  Record r1 = {1, "Alice", 99.5};
-  Record r2 = {2, "Bob", 88.3};
+  User u1 = {1, "Alice"};
+  User u2 = {2, "Bob"};
 
-  addRecord(dbFile, r1);
-  addRecord(dbFile, r2);
+  addUser(dbFile, u1);
+  addUser(dbFile, u2);
 
   struct StopWatch timer;
   reset(&timer);
